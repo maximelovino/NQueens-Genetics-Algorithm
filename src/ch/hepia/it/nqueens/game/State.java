@@ -55,7 +55,7 @@ public class State {
 		return str;
 	}
 
-	public List<State> neighbours(){
+	public ArrayList<State> neighbours(){
 		ArrayList<State> toReturn = new ArrayList<>();
 		for (int i = 0; i < this.state.length; i++) {
 			for (int j = i+1; j < this.state.length; j++) {
@@ -71,5 +71,14 @@ public class State {
 		int temp = this.state[i];
 		this.state[i] = this.state[j];
 		this.state[j] = temp;
+	}
+
+	@Override
+	public int hashCode () {
+		String str = "";
+		for (int i = 0; i < this.state.length; i++) {
+			str += state[i];
+		}
+		return str.hashCode();
 	}
 }
