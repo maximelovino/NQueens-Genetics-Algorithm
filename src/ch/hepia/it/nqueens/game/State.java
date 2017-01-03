@@ -1,7 +1,7 @@
 package ch.hepia.it.nqueens.game;
 
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Random;
 
 public class State {
 	private int[] state;
@@ -18,6 +18,24 @@ public class State {
 		for (int i = 0; i < this.state.length; i++) {
 			this.state[i] = state.get(i);
 		}
+	}
+
+	public static State getRandomState (int size){
+		Random rnd = new Random();
+		State st = new State(size);
+		int[] random = new int[size];
+		ArrayList<Integer> range = new ArrayList<>();
+
+		for (int i = 0; i < size; i++) {
+			range.add(i);
+		}
+
+		for (int i = 0; i < random.length ; i++) {
+			int temp = rnd.nextInt(range.size());
+			random[i] = range.remove(temp);
+		}
+		st.setState(random);
+		return st;
 	}
 
 	public void setState (int[] state) {
@@ -80,5 +98,11 @@ public class State {
 			str += state[i];
 		}
 		return str.hashCode();
+	}
+
+	public void mutate(){
+		ArrayList<State> neighbours = this.neighbours();
+		Random rnd = new Random();
+		this.setState(neighbours.get(rnd.nextInt(neighbours.size())).state);
 	}
 }

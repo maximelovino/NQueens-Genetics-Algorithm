@@ -15,7 +15,11 @@ public class NQueens {
 			System.out.println("What size of the NQueens problem do you want to solve?");
 			size = sc.nextInt();
 		}
+		long startTime = System.nanoTime();
 		State solution = Solver.bruteForceSolve(size);
+		long endTime = System.nanoTime();
+		double elapsed = (endTime-startTime) / 1e9;
 		System.out.println(solution);
+		System.out.println("This took "+elapsed+" seconds");
 	}
 }
