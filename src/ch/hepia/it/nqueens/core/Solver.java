@@ -52,7 +52,52 @@ public class Solver {
 		return toReturn;
 	}
 
-	private static State cross (State a, State b) {
-		return null;
+	public static ArrayList<State> cross (State a, State b) {
+		Random rnd = new Random();
+		ArrayList<Integer> range1 = new ArrayList<>();
+
+		for (int i = 0; i < a.getSize(); i++) range1.add(i);
+		ArrayList<Integer> range2 = new ArrayList<>(range1);
+
+		State c1 = new State(a.getSize());
+		State c2 = new State(a.getSize());
+		int[] c1State = new int[a.getSize()];
+		int[] c2State = new int[a.getSize()];
+
+		int start = rnd.nextInt(a.getSize());
+		int cnt = rnd.nextInt(a.getSize()-start);
+
+		for (int i = start; i < start+cnt; i++) {
+			int val1 = a.get(i);
+			int val2 = b.get(i);
+			c1State[i] = val1;
+			c2State[i] = val2;
+			range1.remove(Integer.valueOf(val1));
+			range2.remove(Integer.valueOf(val2));
+		}
+		int tempIdx1 = start+cnt;
+		int tempIdx2 = tempIdx1;
+		for (int i = 0; i < b.getSize(); i++) {
+			int temp1 = b.get(i);
+			int temp2 = a.get(i);
+			if (range1.contains(temp1)){
+				c1State[tempIdx1] = temp1;
+				range1.remove(Integer.valueOf(temp1));
+				tempIdx1++;
+				tempIdx1 %= a.getSize();
+			}
+			if (range2.contains(temp2)){
+				c2State[tempIdx2] = temp2;
+				range2.remove(Integer.valueOf(temp2));
+				tempIdx2++;
+				tempIdx2 %= a.getSize();
+			}
+		}
+		c1.setState(c1State);
+		c2.setState(c2State);
+		ArrayList<State> toReturn = new ArrayList<>();
+		toReturn.add(c1);
+		toReturn.add(c2);
+		return toReturn;
 	}
 }
