@@ -5,8 +5,11 @@ import ch.hepia.it.nqueens.game.State;
 
 public class TestSolver {
 	public static void main (String[] args) {
-		State a = State.getRandomState(8);
-		State b = State.getRandomState(8);
-		System.out.println(a+" + " + b + " => " + Solver.cross(a,b));
+		State st = Solver.geneticSolve(10);
+		if (st != null){
+			System.out.println("The solution is: "+ st);
+		}else{
+			System.out.println("You suck mate");
+		}
 	}
 }

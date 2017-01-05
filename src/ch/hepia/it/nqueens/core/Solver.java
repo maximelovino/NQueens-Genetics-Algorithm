@@ -5,6 +5,7 @@ import ch.hepia.it.nqueens.game.State;
 import java.util.*;
 
 public class Solver {
+	private static final int MAX_GENERATIONS = 5000;
 	public static State bruteForceSolve (int size) {
 		HashSet<State> visited = new HashSet<>();
 		State current = new State(size);
@@ -33,14 +34,31 @@ public class Solver {
 	}
 
 	public static State geneticSolve (int size) {
-		ArrayList<State> initialPopulation = generateInitialPopulation(size, 10);
-		System.out.println(initialPopulation);
+		Random rnd = new Random();
+		ArrayList<State> population = generateInitialPopulation(size, 1000);
+		int gens = 1;
 
-		// This is how you sort the states according to their conflicts
-		Collections.sort(initialPopulation, Comparator.comparing(o -> o.conflicts()));
+		while (gens<MAX_GENERATIONS){
+			// This is how you sort the states according to their conflicts
+			Collections.sort(population, Comparator.comparing(o -> o.conflicts()));
+			if (population.get(0).conflicts() == 0){
+				return population.get(0);
+			}
 
+			ArrayList<State> futureParents = new ArrayList<>(population.subList(0,(int)(0.5*population.size())));
+			ArrayList<State> nextPop = new ArrayList<>();
+			for (int i = 0; i < futureParents.size(); i++) {
+				for (int j = i+1; j < futureParents.size() ; j++) {
+					nextPop.addAll(cross(futureParents.get(i),futureParents.get(j)));
+				}
+			}
+			for (int i = 0; i < nextPop.size(); i++) {
+				if (rnd.nextBoolean()) nextPop.get(i).mutate();
+			}
+			population = nextPop;
+			gens++;
+		}
 
-		System.out.println(initialPopulation);
 		return null;
 	}
 
