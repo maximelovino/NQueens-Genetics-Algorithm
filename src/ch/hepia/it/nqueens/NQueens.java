@@ -2,34 +2,52 @@ package ch.hepia.it.nqueens;
 
 import ch.hepia.it.nqueens.core.Solver;
 import ch.hepia.it.nqueens.game.State;
+import ch.hepia.it.nqueens.gui.ChessView;
 
-import java.util.Scanner;
+import javax.swing.*;
+import java.awt.*;
 
 public class NQueens {
 	public static void main (String[] args) {
-		int size;
-		Scanner sc = new Scanner(System.in);
-		System.out.println("What size of the NQueens problem do you want to solve?");
-		try {
-			size = sc.nextInt();
-		} catch (Exception e) {
-			System.out.println("Your number was not parsable, we set the size to 8");
-			size = 8;
-		}
+		JFrame frame = new JFrame("NQueens problem");
+		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-		System.out.println("What method do you want to use? \n 0. Bruteforce \n 1. Genetic method");
-		int method;
-		try {
-			method = sc.nextInt();
-		} catch (Exception e) {
-			System.out.println("Your number was not parsable, we set the method to genetics");
-			method = 1;
-		}
-		if (method != 1 && method != 0){
-			System.out.println("This method doesn't exist. We set the method to genetics");
-			method = 1;
-		}
-		long startTime = System.nanoTime();
+		Integer size = Integer.valueOf(JOptionPane.showInputDialog("What size of the NQueens problem would you like to solve?","8"));
+
+		JPanel header = new JPanel(new FlowLayout());
+		JButton bruteforceSolve = new JButton("Bruteforce solve");
+		JButton geneticSolve = new JButton("Genetic solve");
+		header.add(bruteforceSolve);
+		header.add(geneticSolve);
+
+
+
+
+		ChessView view = new ChessView(null,size);
+
+		frame.getContentPane().setLayout(new BorderLayout());
+
+		frame.getContentPane().add(view,BorderLayout.CENTER);
+		frame.getContentPane().add(header, BorderLayout.PAGE_START);
+		frame.pack();
+		frame.setSize(new Dimension(1000,1000));
+		frame.setVisible(true);
+
+
+
+		geneticSolve.addActionListener(e -> {
+			State solution = Solver.geneticSolve(size);
+			view.setState(solution);
+		});
+
+		bruteforceSolve.addActionListener(e -> {
+			State solution = Solver.bruteForceSolve(size);
+			view.setState(solution);
+		});
+
+
+
+/*		long startTime = System.nanoTime();
 		State solution = method == 0 ? Solver.bruteForceSolve(size) : Solver.geneticSolve(size);
 		long endTime = System.nanoTime();
 		double elapsed = (endTime - startTime) / 1e9;
@@ -39,5 +57,6 @@ public class NQueens {
 			System.out.println("No solution was found");
 		}
 		System.out.println("This took " + elapsed + " seconds");
+		view.setState(solution);*/
 	}
 }
