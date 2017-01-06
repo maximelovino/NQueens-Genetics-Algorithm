@@ -11,4 +11,6 @@ The bruteforce method will start from a state of the board and proceed to the mo
 The genetic method will start from a population of random states, keep the better half of them (still according to the fitness function), make crossover of each pair of parents to generate a new generation and mutate each member of this new population with a probability of 1/2.
 
 ## How to use the program?
-At the launch of the main method of the program, you will have the choice of the size of the problem you want to solve, and then two buttons in the main window will allow you to choose the method you want to use to solve the problem.
+At the launch of the main method of the program, you will have the choice of the size of the problem you want to solve, and then two buttons in the main window will allow you to choose the method you want to use to solve the problem. Once the solution is displayed, you can click on any of the queens to show its coverage.
+
+![Queen coverage example](readme_assets/coverage.png)

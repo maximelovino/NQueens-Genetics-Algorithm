@@ -6,17 +6,28 @@ import javax.swing.*;
 import java.awt.*;
 import java.util.HashSet;
 
-public class ChessView extends JPanel{
+public class ChessView extends JPanel {
 	private State state;
 	private static final int BORDER_SIZE = 10;
 	private JButton[] buttons;
+	private boolean[] queens;
+	private int size;
 
-	public ChessView (State state, int size) {
-		super(new GridLayout(size,size));
-		this.state = state;
-		buttons = new JButton[size*size];
+	public ChessView (int size) {
+		super(new GridLayout(size, size));
+		this.size = size;
+		this.state = null;
+		buttons = new JButton[size * size];
+		queens = new boolean[size * size];
 		for (int i = 0; i < buttons.length; i++) {
+			queens[i] = false;
 			buttons[i] = new JButton(new ImageIcon(""));
+			buttons[i].setName(String.valueOf(i));
+			buttons[i].addActionListener(e -> {
+				Integer idx = Integer.valueOf(((JButton) e.getSource()).getName());
+				printTrace(idx);
+
+			});
 			this.add(buttons[i]);
 		}
 		syncButtonsWithState();
@@ -24,32 +35,44 @@ public class ChessView extends JPanel{
 
 	public void syncButtonsWithState () {
 		if (state == null) return;
-
-		HashSet<Integer> queensInButtons = new HashSet<>();
-		for (int i = 0; i < this.state.getSize(); i++) {
+		for (int i = 0; i < this.size; i++) {
 			int temp = this.state.get(i);
-			queensInButtons.add(temp * this.state.getSize()+i);
+			queens[temp * this.size + i] = true;
 		}
 
 		for (int i = 0; i < buttons.length; i++) {
-			if (queensInButtons.contains(Integer.valueOf(i)))
+			if (queens[i])
 				buttons[i].setIcon(new ImageIcon(new ImageIcon("assets/queen.png").getImage().getScaledInstance(60, 60, Image.SCALE_DEFAULT)));
 			else
 				buttons[i].setIcon(new ImageIcon(""));
 		}
 	}
-	public void setState(State state){
-		if (this.state == null || state.getSize() != this.state.getSize()) setNewSize(state.getSize());
+
+	public void setState (State state) {
 		this.state = state;
 		syncButtonsWithState();
 	}
 
-	private void setNewSize (int size){
-		this.removeAll();
-		buttons = new JButton[size*size];
+	private void printTrace (int index) {
+		if (!queens[index]) return;
+		clearAllTraces();
+		System.out.println(index);
+		int divide = index / this.size;
+		int mod = index % this.size;
+
 		for (int i = 0; i < buttons.length; i++) {
-			buttons[i] = new JButton(new ImageIcon(""));
-			this.add(buttons[i]);
+			if (i / this.size == divide || i % this.size == mod || Math.abs(i / this.size - divide) == Math.abs(i % this.size - mod)) {
+				buttons[i].setBackground(i == index ? Color.GREEN : Color.RED);
+				buttons[i].setOpaque(true);
+			}
+		}
+
+	}
+
+	private void clearAllTraces () {
+		for (JButton b : buttons) {
+			b.setBackground(Color.white);
+			b.setOpaque(false);
 		}
 	}
 }

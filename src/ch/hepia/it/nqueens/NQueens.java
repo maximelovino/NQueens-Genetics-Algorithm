@@ -23,7 +23,7 @@ public class NQueens {
 
 
 
-		ChessView view = new ChessView(null,size);
+		ChessView view = new ChessView(size);
 
 		frame.getContentPane().setLayout(new BorderLayout());
 

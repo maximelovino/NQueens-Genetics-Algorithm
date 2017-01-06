@@ -1,6 +1,5 @@
 package ch.hepia.it.nqueens.test;
 
-import ch.hepia.it.nqueens.core.Solver;
 import ch.hepia.it.nqueens.game.State;
 
 public class TestState {
