@@ -3,9 +3,18 @@ package ch.hepia.it.nqueens.game;
 import java.util.ArrayList;
 import java.util.Random;
 
+/**
+ *	Class representing a State of the chessboard
+ *	We use a 1D array to store the line where the queen is present at each column
+ */
 public class State {
 	private int[] state;
+	private static Random rnd = new Random();
 
+	/**
+	 * Default constructor for state (State 0,1,2,...,size)
+	 * @param size	The size of the state
+	 */
 	public State (int size) {
 		this.state = new int[size];
 		for (int i = 0; i < size; i++) {
@@ -13,6 +22,10 @@ public class State {
 		}
 	}
 
+	/**
+	 * Copy constructor for State
+	 * @param state	The state we want to copy
+	 */
 	public State (State state) {
 		this.state = new int[state.getSize()];
 		for (int i = 0; i < this.state.length; i++) {
@@ -20,6 +33,11 @@ public class State {
 		}
 	}
 
+	/**
+	 * Function that returns a random state
+	 * @param size	The size of the state
+	 * @return	A random state
+	 */
 	public static State getRandomState (int size){
 		Random rnd = new Random();
 		State st = new State(size);
@@ -38,18 +56,33 @@ public class State {
 		return st;
 	}
 
+	/**
+	 * Setter for the state
+	 * @param state	The state array we want to set
+	 */
 	public void setState (int[] state) {
 		this.state = state;
 	}
 
+	/**
+	 * @return	The size of the state
+	 */
 	public int getSize(){
 		return this.state.length;
 	}
 
+	/**
+	 * @param idx	The index we're looking for
+	 * @return	The value of the state at that index
+	 */
 	public int get(int idx){
 		return this.state[idx];
 	}
 
+	/**
+	 * This is the fitness function of our state
+	 * @return	The number of conflicts of the state
+	 */
 	public int conflicts(){
 		int conflicts = 0;
 		for (int i = 0; i < this.state.length; i++) {
@@ -63,6 +96,9 @@ public class State {
 		return conflicts;
 	}
 
+	/**
+	 * @return	The string representation of the state
+	 */
 	@Override
 	public String toString () {
 		String str = "[";
@@ -73,7 +109,10 @@ public class State {
 		return str;
 	}
 
-	public ArrayList<State> neighbours(){
+	/**
+	 * @return	The list of neighbors of the state, meaning the states obtained by swapping two columns
+	 */
+	public ArrayList<State> neighbors (){
 		ArrayList<State> toReturn = new ArrayList<>();
 		for (int i = 0; i < this.state.length; i++) {
 			for (int j = i+1; j < this.state.length; j++) {
@@ -85,12 +124,20 @@ public class State {
 		return toReturn;
 	}
 
+	/**
+	 * Method to swap two columns of the state
+	 * @param i	The first column
+	 * @param j	The second column
+	 */
 	private void swap (int i, int j) {
 		int temp = this.state[i];
 		this.state[i] = this.state[j];
 		this.state[j] = temp;
 	}
 
+	/**
+	 * @return	The hashcode of the state
+	 */
 	@Override
 	public int hashCode () {
 		String str = "";
@@ -100,9 +147,13 @@ public class State {
 		return str.hashCode();
 	}
 
+	/**
+	 * Method to mutate a state, meaning swapping two random columns
+	 */
 	public void mutate(){
-		ArrayList<State> neighbours = this.neighbours();
-		Random rnd = new Random();
-		this.setState(neighbours.get(rnd.nextInt(neighbours.size())).state);
+		int first = rnd.nextInt(state.length);
+		int second;
+		do second = rnd.nextInt(state.length); while (second == first);
+		this.swap(first,second);
 	}
 }

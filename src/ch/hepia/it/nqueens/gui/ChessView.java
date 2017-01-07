@@ -5,13 +5,20 @@ import ch.hepia.it.nqueens.game.State;
 import javax.swing.*;
 import java.awt.*;
 
+/**
+ * Class for the view of our chessboard
+ */
 public class ChessView extends JPanel {
 	private State state;
-	private static final int BORDER_SIZE = 10;
 	private JButton[] buttons;
 	private boolean[] queens;
 	private int size;
 
+	/**
+	 * Main constructor for our view
+	 * We initialize with the size of the problem but a null state, since the solution is not computed yet
+	 * @param size	The size of our view
+	 */
 	public ChessView (int size) {
 		super(new GridLayout(size, size));
 		this.size = size;
@@ -29,9 +36,11 @@ public class ChessView extends JPanel {
 			});
 			this.add(buttons[i]);
 		}
-		syncButtonsWithState();
 	}
 
+	/**
+	 * Method to sync the buttons of the view with the state
+	 */
 	public void syncButtonsWithState () {
 		if (state == null) return;
 		for (int i = 0; i < this.size; i++) {
@@ -47,11 +56,19 @@ public class ChessView extends JPanel {
 		}
 	}
 
+	/**
+	 * Method to set a new state for the view
+	 * @param state	The new state
+	 */
 	public void setState (State state) {
 		this.state = state;
 		syncButtonsWithState();
 	}
 
+	/**
+	 * Method that displays the coverage of a queen on the GUI
+	 * @param index	The index of the clicked cell, we will display coverage only if queen
+	 */
 	private void printTrace (int index) {
 		if (!queens[index]) return;
 		clearAllTraces();
@@ -67,7 +84,10 @@ public class ChessView extends JPanel {
 
 	}
 
-	private void clearAllTraces () {
+	/**
+	 * Method to clear all coverage displayed
+	 */
+	public void clearAllTraces () {
 		for (JButton b : buttons) {
 			b.setBackground(Color.white);
 			b.setOpaque(false);
