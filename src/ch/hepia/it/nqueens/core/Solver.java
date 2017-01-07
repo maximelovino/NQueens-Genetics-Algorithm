@@ -47,11 +47,17 @@ public class Solver {
 
 			ArrayList<State> futureParents = new ArrayList<>(population.subList(0,(int)(0.5*population.size())));
 			ArrayList<State> nextPop = new ArrayList<>();
-			for (int i = 0; i < futureParents.size(); i++) {
+
+			loop1: for (int i = 0; i < futureParents.size(); i++) {
 				for (int j = i+1; j < futureParents.size() ; j++) {
 					nextPop.addAll(cross(futureParents.get(i),futureParents.get(j)));
+					// This takes care of having all generations of the same size, otherwise it would increase exponentially
+					if (nextPop.size() == population.size()){
+						break loop1;
+					}
 				}
 			}
+
 			for (int i = 0; i < nextPop.size(); i++) {
 				if (rnd.nextBoolean()) nextPop.get(i).mutate();
 			}

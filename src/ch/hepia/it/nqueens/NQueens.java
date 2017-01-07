@@ -44,19 +44,5 @@ public class NQueens {
 			State solution = Solver.bruteForceSolve(size);
 			view.setState(solution);
 		});
-
-
-
-/*		long startTime = System.nanoTime();
-		State solution = method == 0 ? Solver.bruteForceSolve(size) : Solver.geneticSolve(size);
-		long endTime = System.nanoTime();
-		double elapsed = (endTime - startTime) / 1e9;
-		if (solution != null){
-			System.out.println("The solution is: "+solution);
-		}else{
-			System.out.println("No solution was found");
-		}
-		System.out.println("This took " + elapsed + " seconds");
-		view.setState(solution);*/
 	}
 }

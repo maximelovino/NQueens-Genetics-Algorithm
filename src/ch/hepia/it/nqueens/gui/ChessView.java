@@ -4,7 +4,6 @@ import ch.hepia.it.nqueens.game.State;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.HashSet;
 
 public class ChessView extends JPanel {
 	private State state;
@@ -56,7 +55,6 @@ public class ChessView extends JPanel {
 	private void printTrace (int index) {
 		if (!queens[index]) return;
 		clearAllTraces();
-		System.out.println(index);
 		int divide = index / this.size;
 		int mod = index % this.size;
 
