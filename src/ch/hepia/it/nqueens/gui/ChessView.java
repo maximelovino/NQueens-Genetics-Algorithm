@@ -43,6 +43,9 @@ public class ChessView extends JPanel {
 	 */
 	public void syncButtonsWithState () {
 		if (state == null) return;
+		for (int i = 0; i < queens.length; i++) {
+			queens[i] = false;
+		}
 		for (int i = 0; i < this.size; i++) {
 			int temp = this.state.get(i);
 			queens[temp * this.size + i] = true;
